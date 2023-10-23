@@ -1,5 +1,5 @@
 n = 0.5; % Passo de aprendizagem
-W = -0.5 +  rand(1, 3); % Vetor de pesos aleatórios
+W = -0.5 + rand(1, 3); % Vetor de pesos aleatórios
 
 % Vetor de entradas
 X = [ 
