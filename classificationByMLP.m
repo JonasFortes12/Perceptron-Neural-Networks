@@ -16,7 +16,7 @@ data = normalizeData(data);
 % Vetor de acurácias
 accuracies = [];
 
-% Realiza 10 iterações de classificação dos dados
+% Realiza 10 iterações de classificação e teste
 for i = 1:10
 
     % Permuta os dados
@@ -47,7 +47,11 @@ for i = 1:10
 
 end
 
-fprintf('Acurácia Média: %.2f%%\n', sum(accuracies)/length(accuracies));
+% Mostra os resultados de acurácias
+showResult(accuracies);
+
+
+
 
 
 % Função para permutar os dados
@@ -64,7 +68,7 @@ function accuracy = calculateAccuracy(Y, YTest)
     % Quantidades de acertos
     hits = sum(indexMaxYTest == indexMaxY);
     
-    accuracy = (hits / 93) * 100;
+    accuracy = (hits / length(Y)) * 100;
     
 end
 
@@ -72,6 +76,42 @@ end
 function normalizedData = normalizeData(data)
     normalizedData = (data - min(data)) ./ (max(data) - min(data));
 end
+
+function showResult(accuracies)
+    averageAccuracy = sum(accuracies)/length(accuracies);
+    
+    fig = figure;
+    set(fig, 'Position', [100, 100, 800, 500]); 
+    
+    % Plota o gráfico de iterações vs. acurácias
+    plot(1:numel(accuracies), accuracies, '-o', 'LineWidth', 2);
+    xlabel('Iteração (treino e teste)');
+    ylabel('Acurácia (%)');
+    title('Gráfico de Iteração (treino e teste) vs. Acurácia');
+    grid on;
+    
+    % Adiciona uma etiqueta com o resultado da acurácia média na parte inferior direita
+    text(numel(accuracies), min(accuracies), sprintf('Acurácia Média: %.2f%%', averageAccuracy), 'HorizontalAlignment', 'right', 'FontSize', 15);
+    
+    % Plota um ponto no meio do gráfico na posição da acurácia média
+    hold on;
+    scatter(numel(accuracies) / 2, averageAccuracy, 100, 'c', 'filled');
+    
+    % Traça uma linha horizontal no ponto da acurácia média
+    plot([1, numel(accuracies)], [averageAccuracy, averageAccuracy], '--c', 'LineWidth', 1);
+    
+
+    % Adiciona a legenda
+    legend('Acurácias', 'Acurácia Média', 'Location', 'Best');
+
+    fprintf('Acurácia Média: %.2f%%\n',averageAccuracy);
+   
+end
+
+
+
+
+
 
 
 
